@@ -23,6 +23,7 @@ namespace bp = boost::python;
 #include <interfaces/I3CalibrationService.h>
 #include <dataclasses/I3Time.h>
 #include <dataclasses/calibration/I3Calibration.h>
+#include <icetray/python/gil_holder.hpp>
 
 #include "install.h"
 
@@ -30,6 +31,7 @@ struct I3CalibrationServiceWrapper : I3CalibrationService, wrapper<I3Calibration
 {
   I3CalibrationConstPtr GetCalibration(I3Time t) 
   {  
+    bp::detail::gil_holder lock;
     return this->get_override("GetCalibration")(t); 
   }
 };

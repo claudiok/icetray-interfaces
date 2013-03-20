@@ -23,13 +23,14 @@ namespace bp = boost::python;
 #include <interfaces/I3EventService.h>
 #include <icetray/I3Frame.h>
 #include <dataclasses/I3Time.h>
+#include <icetray/python/gil_holder.hpp>
 
 #include "install.h"
 
 struct I3EventServiceWrapper : I3EventService, wrapper<I3EventService>
 {
-  bool MoreEvents() {  return this->get_override("MoreEvents")(); }
-  I3Time PopEvent(I3Frame& frame) { return this->get_override("PopEvent")(frame); }
+  bool MoreEvents() {  bp::detail::gil_holder lock; return this->get_override("MoreEvents")(); }
+  I3Time PopEvent(I3Frame& frame) { bp::detail::gil_holder lock; return this->get_override("PopEvent")(frame); }
 };
 
 void register_I3EventService()

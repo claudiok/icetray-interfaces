@@ -23,6 +23,7 @@ namespace bp = boost::python;
 #include <interfaces/I3DetectorStatusService.h>
 #include <dataclasses/I3Time.h>
 #include <dataclasses/status/I3DetectorStatus.h>
+#include <icetray/python/gil_holder.hpp>
 
 #include "install.h"
 
@@ -30,6 +31,7 @@ struct I3DetectorStatusServiceWrapper : I3DetectorStatusService, wrapper<I3Detec
 {
   I3DetectorStatusConstPtr GetDetectorStatus(I3Time t) 
   {  
+    bp::detail::gil_holder lock;
     return this->get_override("GetDetectorStatus")(t); 
   }
 };

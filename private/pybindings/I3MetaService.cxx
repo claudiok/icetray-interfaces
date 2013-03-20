@@ -11,6 +11,7 @@
 
 #include "interfaces/I3MetaService.h"
 #include "icetray/I3Frame.h"
+#include <icetray/python/gil_holder.hpp>
 
 #include "install.h"
 
@@ -18,7 +19,7 @@ namespace bp = boost::python;
 
 struct I3MetaServiceWrapper : I3MetaService, bp::wrapper<I3MetaService>
 {
-  I3FramePtr PopMeta() {  return this->get_override("PopMeta")(); }
+  I3FramePtr PopMeta() { bp::detail::gil_holder lock; return this->get_override("PopMeta")(); }
 };
 
 void

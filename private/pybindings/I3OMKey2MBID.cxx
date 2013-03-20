@@ -1,24 +1,29 @@
 #include <boost/python.hpp>
 
 #include "interfaces/I3OMKey2MBID.h"
+#include "icetray/python/gil_holder.hpp"
 
 namespace bp = boost::python;
 
 struct I3OMKey2MBIDWrapper : public I3OMKey2MBID, bp::wrapper<I3OMKey2MBID> {
   bool OMKeyExists(long long int mbid) const
   {
+    bp::detail::gil_holder lock;
     return this->get_override("OMKeyExists")(mbid);
   }
   bool MBIDExists(OMKey key) const
   {
+    bp::detail::gil_holder lock;
     return this->get_override("MBIDExists")(key);
   }
   OMKey GetOMKey(long long int mbid) const
   {
+    bp::detail::gil_holder lock;
     return this->get_override("GetOMKey")(mbid);
   }
   long long int GetMBID(OMKey key) const
   {
+    bp::detail::gil_holder lock;
     return this->get_override("GetMBID")(key);
   }
 };

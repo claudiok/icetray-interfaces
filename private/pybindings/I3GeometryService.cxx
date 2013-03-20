@@ -23,6 +23,7 @@ namespace bp = boost::python;
 #include <interfaces/I3GeometryService.h>
 #include <dataclasses/I3Time.h>
 #include <dataclasses/geometry/I3Geometry.h>
+#include <icetray/python/gil_holder.hpp>
 
 #include "install.h"
 
@@ -30,6 +31,7 @@ struct I3GeometryServiceWrapper : I3GeometryService, wrapper<I3GeometryService>
 {
   I3GeometryConstPtr GetGeometry(I3Time t) 
   {  
+    bp::detail::gil_holder lock;
     return this->get_override("GetGeometry")(t); 
   }
 };
